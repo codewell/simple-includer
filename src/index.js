@@ -10,7 +10,8 @@ import path from 'path';
  * @param {object} config - Array with strings to files that should not be included
  */
 const simpleIncluder = (params) => {
-  const { exclude, constructor, verbose } = params;
+  const { constructor, verbose } = params;
+  const exclude = params.exclude || [];
   const includePath = params.path;
   fs.readdirSync(includePath)
     .forEach(fileOrDirectory => {
@@ -29,7 +30,7 @@ const simpleIncluder = (params) => {
         if (stat.isFile()) {
           // Require the file with the constructor as parameter
           require(absoluteFilePath)(constructor)
-          if (process.env.NODE_ENV === 'development' && verbose === true) {
+          if (verbose === true) {
             console.log(`> ${fileOrDirectory} was included`);
           }
         }
@@ -38,11 +39,11 @@ const simpleIncluder = (params) => {
 };
 
 export default params => {
-  if (process.env.NODE_ENV === 'development' && params.verbose === true) {
+  if (params.verbose === true) {
     console.log('- - - - - - SIMPLE INCLUDER - - - - - -');
   }
   simpleIncluder(params);
-  if (process.env.NODE_ENV === 'development' && params.verbose === true) {
+  if (params.verbose === true) {
     console.log('- - - - - - - - - - - - - - - - - - - -');
   }
 };

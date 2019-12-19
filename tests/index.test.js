@@ -10,4 +10,10 @@ simpleIncluder({
   verbose: true,
 })
 
+simpleIncluder({
+  path: includePath,
+  constructor: { foo: 'bar' },
+  verbose: true,
+})
+
 test()

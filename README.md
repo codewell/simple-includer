@@ -1,6 +1,37 @@
-# simple-includer
-Simply load all files from a directory
 # @codewell/simple-includer
+Simply load all files from a directory assuming that they all export one funtion that takes the same constructor object as input.
+
+## Examples
+```JavaScript
+// Example file to be included
+module.exports = (constructor) => {
+    // Do something
+};
+```
+
+### Example include api endpoints
+```JavaScript
+// index.js
+const path = requrie('path');
+const express = require('express');
+const simpleIncluder = require('simple-includer');
+const app = express();
+
+simpleIncluder({
+    path: path.resolve(__dirname, './api'),
+    constructor: { app },
+})
+```
+
+```JavaScript
+// api/endpoint1.js
+
+module.exports = ({app}) => {
+    app.get('/', (req, res) => {
+        // Do some magic
+    })
+}
+```
 
 ## Installation
 ```
@@ -9,9 +40,23 @@ npm install @codewell/simple-includer
 
 ## Basic Usage
 ```JavaScript
-import <nameOfModule> from '@codewell/simple-includer';
+import simpleIncluder from '@codewell/simple-includer';
 
-// Write examples here
+simpleIncluder({
+    // Path to directory to include
+    path: './someDir', 
+
+    // All directory- filenames that 
+    // should be excluded
+    exclude: ['filename'], 
+    
+    // Constructor object the included 
+    // function should be called with
+    constructor: {foo: 'bar'}, with
+    
+    // If the included files should be logged
+    verbose: true // or false
+});
 ```
 
 ## Testing
